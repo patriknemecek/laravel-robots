@@ -1,4 +1,6 @@
-<?php namespace Healey\Robots;
+<?php
+
+namespace MadWeb\Robots;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -9,5 +11,8 @@ class RobotsFacade extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'robots'; }
+    protected static function getFacadeAccessor()
+    {
+        return 'robots';
+    }
 }

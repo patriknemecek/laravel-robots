@@ -1,19 +1,18 @@
 <?php
 
-use Healey\Robots\Robots;
+namespace MadWeb\Robots\Test;
 
-class RobotsTest extends PHPUnit_Framework_TestCase
+class RobotsTest extends TestCase
 {
     public function testNewInstanceEmpty()
     {
-        $robots = new Robots();
-        $this->assertEquals("", $robots->generate());
+        $this->assertEquals('', $this->getRobotsService()->generate());
     }
 
     public function testAddSitemap()
     {
-        $robots  = new Robots();
-        $sitemap = "sitemap.xml";
+        $robots = $this->getRobotsService();
+        $sitemap = 'sitemap.xml';
 
         $this->assertNotContains($sitemap, $robots->generate());
         $robots->addSitemap($sitemap);
@@ -22,8 +21,8 @@ class RobotsTest extends PHPUnit_Framework_TestCase
 
     public function testAddUserAgent()
     {
-        $robots    = new Robots();
-        $userAgent = "Google";
+        $robots = $this->getRobotsService();
+        $userAgent = 'Google';
 
         $this->assertNotContains("User-agent: $userAgent", $robots->generate());
         $robots->addUserAgent($userAgent);
@@ -32,8 +31,8 @@ class RobotsTest extends PHPUnit_Framework_TestCase
 
     public function testaddHost()
     {
-        $robots = new Robots();
-        $host   = "www.google.com.au";
+        $robots = $this->getRobotsService();
+        $host = 'www.google.com.au';
 
         $this->assertNotContains("Host: $host", $robots->generate());
         $robots->addHost($host);
@@ -42,9 +41,9 @@ class RobotsTest extends PHPUnit_Framework_TestCase
 
     public function testaddDisallow()
     {
-        $robots = new Robots();
-        $path   = "/dir/";
-        $paths  = array("/dir-1/", "/dir-2/", "/dir-3/");
+        $robots = $this->getRobotsService();
+        $path = '/dir/';
+        $paths = ['/dir-1/', '/dir-2/', '/dir-3/'];
 
         // Test a single path.
         $this->assertNotContains("Disallow: $path", $robots->generate());
@@ -52,8 +51,7 @@ class RobotsTest extends PHPUnit_Framework_TestCase
         $this->assertContains("Disallow: $path", $robots->generate());
 
         // Test array of paths.
-        foreach($paths as $path_test)
-        {
+        foreach ($paths as $path_test) {
             $this->assertNotContains("Disallow: $path_test", $robots->generate());
         }
 
@@ -62,15 +60,16 @@ class RobotsTest extends PHPUnit_Framework_TestCase
 
         // Check the old path is still there
         $this->assertContains("Disallow: $path", $robots->generate());
-        foreach($paths as $path_test)
+        foreach ($paths as $path_test) {
             $this->assertContains("Disallow: $path_test", $robots->generate());
+        }
     }
 
     public function testaddAllow()
     {
-        $robots = new Robots();
-        $path   = "/dir/";
-        $paths  = array("/dir-1/", "/dir-2/", "/dir-3/");
+        $robots = $this->getRobotsService();
+        $path = '/dir/';
+        $paths = ['/dir-1/', '/dir-2/', '/dir-3/'];
 
         // Test a single path.
         $this->assertNotContains("Allow: $path", $robots->generate());
@@ -78,8 +77,7 @@ class RobotsTest extends PHPUnit_Framework_TestCase
         $this->assertContains("Allow: $path", $robots->generate());
 
         // Test array of paths.
-        foreach($paths as $path_test)
-        {
+        foreach ($paths as $path_test) {
             $this->assertNotContains("Allow: $path_test", $robots->generate());
         }
 
@@ -89,18 +87,17 @@ class RobotsTest extends PHPUnit_Framework_TestCase
         // Check the old path is still there
         $this->assertContains("Allow: $path", $robots->generate());
 
-        foreach($paths as $path_test)
-        {
+        foreach ($paths as $path_test) {
             $this->assertContains("Allow: $path_test", $robots->generate());
         }
     }
 
     public function testaddComment()
     {
-        $robots    = new Robots();
-        $comment_1 = "Test comment";
-        $comment_2 = "Another comment";
-        $comment_3 = "Final test comment";
+        $robots = $this->getRobotsService();
+        $comment_1 = 'Test comment';
+        $comment_2 = 'Another comment';
+        $comment_3 = 'Final test comment';
 
         $this->assertNotContains("# $comment_1", $robots->generate());
         $this->assertNotContains("# $comment_2", $robots->generate());
@@ -121,30 +118,30 @@ class RobotsTest extends PHPUnit_Framework_TestCase
 
     public function testaddSpacer()
     {
-        $robots = new Robots();
+        $robots = $this->getRobotsService();
 
-        $lines  = count(preg_split('/'. PHP_EOL .'/', $robots->generate()));
+        $lines = count(preg_split('/'.PHP_EOL.'/', $robots->generate()));
         $this->assertEquals(1, $lines); // Starts off with at least one line.
 
         $robots->addSpacer();
         $robots->addSpacer();
-        $lines = count(preg_split('/'. PHP_EOL .'/', $robots->generate()));
+        $lines = count(preg_split('/'.PHP_EOL.'/', $robots->generate()));
 
         $this->assertEquals(2, $lines);
     }
 
     public function testReset()
     {
-        $robots = new Robots();
+        $robots = $this->getRobotsService();
 
-        $this->assertEquals("", $robots->generate());
+        $this->assertEquals('', $robots->generate());
 
-        $robots->addComment("First Comment");
-        $robots->addHost("www.google.com");
-        $robots->addSitemap("sitemap.xml");
-        $this->assertNotEquals("", $robots->generate());
+        $robots->addComment('First Comment');
+        $robots->addHost('www.google.com');
+        $robots->addSitemap('sitemap.xml');
+        $this->assertNotEquals('', $robots->generate());
 
         $robots->reset();
-        $this->assertEquals("", $robots->generate());
+        $this->assertEquals('', $robots->generate());
     }
 }

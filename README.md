@@ -28,23 +28,40 @@ _*For Laravel <= 5.4*_ - Now add the service provider in config/app.php file:
 
 ## Usage
 
+You can create simple single action controller for generating robots.txt
+
+**/routes/web.php**
 ```php
-<?php
+Route::get('robots.txt', 'Resources\Robots');
+```
+**/app/Http/Controllers/Robots**
+```php
+namespace App\Http\Controllers;
 
-Route::get('robots.txt', function() {
+use App\Http\Controllers\Controller;
+use MadWeb\Robots\Robots as RobotsService;
 
-    // If on the live server, serve a nice, welcoming robots.txt.
-    if (app()->environment('production'))
+class Robots extends Controller
+{
+    /**
+     * Generate robots.txt
+     */
+    public function __invoke(RobotsService $robots)
     {
-        Robots::addUserAgent('*');
-        Robots::addSitemap('sitemap.xml');
-    } else {
-        // If you're on any other server, tell everyone to go away.
-        Robots::addDisallow('*');
-    }
+        $robots->addUserAgent('*');
 
-    return response(Robots::generate(), 200, ['Content-Type' => 'text/plain']);
-});
+        if (app()->environment('production')) {
+            // If on the live server, serve a nice, welcoming robots.txt.
+            $robots->addDisallow('/admin');
+            $robots->addSitemap('sitemap.xml');
+        } else {
+            // If you're on any other server, tell everyone to go away.
+            $robots->addDisallow('/');
+        }
+
+        return response($robots->generate(), 200, ['Content-Type' => 'text/plain']);
+    }
+}
 ```
 
 ## Changelog

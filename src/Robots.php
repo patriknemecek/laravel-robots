@@ -1,13 +1,15 @@
-<?php namespace Healey\Robots;
+<?php
+
+namespace MadWeb\Robots;
 
 class Robots
 {
     /**
-     * The lines of for the robots.txt
+     * The lines of for the robots.txt.
      *
      * @var array
      */
-    protected $lines = array();
+    protected $lines = [];
 
     /**
      * Generate the robots.txt data.
@@ -75,10 +77,9 @@ class Robots
      * @param string|array $directories
      * @param string       $rule
      */
-    protected function addRuleLine($directories, $rule)
+    public function addRuleLine($directories, string $rule)
     {
-        foreach ((array) $directories as $directory)
-        {
+        foreach ((array) $directories as $directory) {
             $this->addLine("$rule: $directory");
         }
     }
@@ -98,7 +99,7 @@ class Robots
      */
     public function addSpacer()
     {
-        $this->addLine("");
+        $this->addLine('');
     }
 
     /**
@@ -106,9 +107,9 @@ class Robots
      *
      * @param string $line
      */
-    protected function addLine($line)
+    public function addLine(string $line)
     {
-        $this->lines[] = (string) $line;
+        $this->lines[] = $line;
     }
 
     /**
@@ -118,8 +119,7 @@ class Robots
      */
     protected function addLines($lines)
     {
-        foreach ((array) $lines as $line)
-        {
+        foreach ((array) $lines as $line) {
             $this->addLine($line);
         }
     }
@@ -131,6 +131,6 @@ class Robots
      */
     public function reset()
     {
-        $this->lines = array();
+        $this->lines = [];
     }
 }
