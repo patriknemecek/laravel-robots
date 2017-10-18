@@ -1,48 +1,32 @@
-Robots.txt Generator for Laravel
-=========
-[![Build Status](https://travis-ci.org/jayhealey/Robots.svg?branch=master)](https://travis-ci.org/jayhealey/Robots)
+# Very short description of the package
 
-The original Robots class was written by *dragonfire1119* of TutsGlobal.com: <http://tutsglobal.com/topic/15-how-to-make-a-robotstxt-in-laravel-4/>
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Software License][ico-license]](LICENSE.md)
+[![Build Status][ico-travis]][link-travis]
+[![StyleCI][ico-style]][link-style]
+[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
+[![Quality Score][ico-code-quality]][link-code-quality]
+[![Total Downloads][ico-downloads]][link-downloads]
 
-The class itself (`Robots.php`) will work on any PHP 5.3+ site. It could easily be modified for 5.2 by removing the namespace.
+Nice Robots.txt generator service. For more information see [www.robotstxt.org](http://www.robotstxt.org)
 
-This repository offers easy integration via Composer and includes service provider and a facade for Laravel 4+ alongside a set of PHPUnit tests.
+## Installation
 
-Checkout the `Robots.php` class for a full understanding of the functionality.
+You can install the package via composer:
 
-## Installation:
-
-### Step 1. Downloading
-
-As usual with Composer packages, there are two ways to install:
-
-You can install via Composer. Pick the "master" as the version of the package.
-
-    composer require healey/robots
-
-Or add the following to your `composer.json` in the `require` section and then run `composer update` to install it.
-
-```js
-{
-    "require": {
-        "healey/robots": "dev-master"
-    }
-}
+```bash
+composer require mad-web/laravel-robots
 ```
 
-### Step 2. Usage
-
-#### Laravel
-
-Once installed via Composer you need to add the service provider. Do this by adding the following to the 'providers' section of the application config (usually `app/config/app.php`):
-
+_*For Laravel <= 5.4*_ - Now add the service provider in config/app.php file:
 ```php
-'Healey\Robots\RobotsServiceProvider',
+'providers' => [
+    // ...
+    MadWeb\Robots\RobotsServiceProvider::class,
+];
 ```
 
-Note that the facade allows you to use the class by simply calling `Robots::doSomething()`.
-
-The quickest way to use Robots is to just setup a callback-style route for `robots.txt` in your `/app/routes.php` file.
+## Usage
 
 ```php
 <?php
@@ -50,7 +34,7 @@ The quickest way to use Robots is to just setup a callback-style route for `robo
 Route::get('robots.txt', function() {
 
     // If on the live server, serve a nice, welcoming robots.txt.
-    if (App::environment() == 'production')
+    if (app()->environment('production'))
     {
         Robots::addUserAgent('*');
         Robots::addSitemap('sitemap.xml');
@@ -59,30 +43,50 @@ Route::get('robots.txt', function() {
         Robots::addDisallow('*');
     }
 
-    return Response::make(Robots::generate(), 200, array('Content-Type' => 'text/plain'));
+    return response(Robots::generate(), 200, ['Content-Type' => 'text/plain']);
 });
 ```
 
-#### PHP 5.3+
+## Changelog
 
-Add a rule in your `.htaccess` for `robots.txt` that points to a new script/template/controller/route/etc.
+Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
 
-The code would look something like:
+## Testing
 
-```php
-<?php
-use Healey\Robots\Robots;
-
-$robots = new Robots();
-$robots->addUserAgent('*');
-$robots->addSitemap('sitemap.xml');
-
-header("HTTP/1.1 200 OK");
-echo $robots->generate();
+``` bash
+$ composer test
 ```
 
-And that's it! You can show different `robots.txt` files depending on how simple or complicated you want it to be.
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details.
+
+## Security
+
+If you discover any security related issues, please email madweb.dev@gmail.com instead of using the issue tracker.
+
+## Credits
+
+- [mad-web](https://github.com/mad-web)
+- [All Contributors](../../contributors)
 
 ## License
 
-MIT
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+[ico-version]: https://img.shields.io/packagist/v/mad-web/laravel-robots.svg?style=flat-square
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/mad-web/laravel-robots/master.svg?style=flat-square
+[ico-style]: https://styleci.io/repos/107463951/shield
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/mad-web/laravel-robots.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/mad-web/laravel-robots.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/mad-web/laravel-robots.svg?style=flat-square
+
+[link-packagist]: https://packagist.org/packages/mad-web/laravel-robots
+[link-travis]: https://travis-ci.org/mad-web/laravel-robots
+[link-style]: https://styleci.io/repos/107463951
+[link-scrutinizer]: https://scrutinizer-ci.com/g/mad-web/laravel-robots/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/mad-web/laravel-robots
+[link-downloads]: https://packagist.org/packages/mad-web/laravel-robots
+[link-author]: https://github.com/mad-web
+[link-contributors]: ../../contributors
