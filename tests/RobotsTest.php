@@ -144,4 +144,37 @@ class RobotsTest extends TestCase
         $robots->reset();
         $this->assertEquals('', $robots->generate());
     }
+
+    public function testShouldIndex()
+    {
+        $robots = $this->getRobotsService();
+
+        $robots->setShouldIndexCallback(function () {
+            return true;
+        });
+
+        $this->assertTrue($robots->shouldIndex());
+    }
+
+    public function testShouldNotIndex()
+    {
+        $robots = $this->getRobotsService();
+
+        $robots->setShouldIndexCallback(function () {
+            return false;
+        });
+
+        $this->assertTrue(! $robots->shouldIndex());
+    }
+
+    public function testMetaTag()
+    {
+        $robots = $this->getRobotsService();
+
+        $robots->setShouldIndexCallback(function () {
+            return true;
+        });
+
+        $this->assertEquals('<meta name="robots" content="index, follow">', $robots->metaTag());
+    }
 }
