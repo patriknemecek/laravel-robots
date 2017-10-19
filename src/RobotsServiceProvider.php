@@ -23,5 +23,16 @@ class RobotsServiceProvider extends ServiceProvider
         $this->app->bind('robots', function () {
             return new Robots;
         });
+        $this->app->alias('robots', Robots::class);
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return [Robots::class, 'robots'];
     }
 }

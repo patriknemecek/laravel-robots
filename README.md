@@ -28,29 +28,40 @@ _*For Laravel <= 5.4*_ - Now add the service provider in config/app.php file:
 
 ## Usage
 
+Setting a condition in your `AppServiceProvider` that determines whether the site should be indexed.
+```php
+public function boot()
+{
+    Robots::setShouldIndexCallback(function () {
+        return app()->environment('production');
+    });
+    ...
+}
+```
+
 You can create simple single action controller for generating robots.txt
 
 **/routes/web.php**
 ```php
-Route::get('robots.txt', 'Resources\Robots');
+Route::get('robots.txt', 'RobotsController');
 ```
 **/app/Http/Controllers/Robots**
 ```php
 namespace App\Http\Controllers;
 
+use MadWeb\Robots\Robots;
 use App\Http\Controllers\Controller;
-use MadWeb\Robots\Robots as RobotsService;
 
-class Robots extends Controller
+class RobotsController extends Controller
 {
     /**
      * Generate robots.txt
      */
-    public function __invoke(RobotsService $robots)
+    public function __invoke(Robots $robots)
     {
         $robots->addUserAgent('*');
 
-        if (app()->environment('production')) {
+        if ($robots->shouldIndex()) {
             // If on the live server, serve a nice, welcoming robots.txt.
             $robots->addDisallow('/admin');
             $robots->addSitemap('sitemap.xml');
@@ -62,6 +73,13 @@ class Robots extends Controller
         return response($robots->generate(), 200, ['Content-Type' => 'text/plain']);
     }
 }
+```
+
+Add robots meta tag into your view inside the `<head>` tag
+```html
+<head>
+	{!! Robots::metaTag() !!}
+</head>
 ```
 
 ## Changelog

@@ -11,6 +11,9 @@ class Robots
      */
     protected $lines = [];
 
+    /** @var callable|bool */
+    protected static $shouldIndex = true;
+
     /**
      * Generate the robots.txt data.
      *
@@ -132,5 +135,33 @@ class Robots
     public function reset()
     {
         $this->lines = [];
+    }
+
+    /**
+     * Set callback with should index condition.
+     */
+    public function setShouldIndexCallback(callable $callback)
+    {
+        self::$shouldIndex = $callback;
+    }
+
+    /**
+     * Check is application should be indexed.
+     */
+    public function shouldIndex(): bool
+    {
+        if (is_callable(self::$shouldIndex)) {
+            return (bool) call_user_func(self::$shouldIndex);
+        }
+
+        return self::$shouldIndex;
+    }
+
+    /**
+     * Render robots meta tag.
+     */
+    public function metaTag(): string
+    {
+        return '<meta name="robots" content="'.($this->shouldIndex() ? 'index, follow' : 'noindex, nofollow').'">';
     }
 }
