@@ -30,9 +30,11 @@ _*For Laravel <= 5.4*_ - Now add the service provider in config/app.php file:
 
 Setting a condition in your `AppServiceProvider` that determines whether the site should be indexed.
 ```php
+use MadWeb\Robots\RobotsFacade;
+
 public function boot()
 {
-    Robots::setShouldIndexCallback(function () {
+    RobotsFacade::setShouldIndexCallback(function () {
         return app()->environment('production');
     });
     ...
