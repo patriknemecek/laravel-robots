@@ -1,4 +1,4 @@
-# Very short description of the package
+# Robots.txt generator service
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
