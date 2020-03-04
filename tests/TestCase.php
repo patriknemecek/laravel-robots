@@ -2,10 +2,10 @@
 
 namespace MadWeb\Robots\Test;
 
-use PHPUnit\Runner\Version;
-use MadWeb\Robots\RobotsFacade;
 use Illuminate\Container\Container;
+use MadWeb\Robots\RobotsFacade;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use PHPUnit\Runner\Version;
 
 class TestCase extends OrchestraTestCase
 {
