@@ -15,7 +15,7 @@ Nice Robots.txt generator service. For more information see [www.robotstxt.org](
 You can install the package via composer:
 
 ```bash
-composer require mad-web/laravel-robots
+composer require mtconsultingroup/laravel-robots
 ```
 
 ## Usage
